@@ -1,0 +1,21 @@
+# AWS & Cloud
+boto3                      # AWS SDK for Python
+snowflake-connector-python # Snowflake integration
+
+# Data Processing
+pandas
+requests                   # For API calls
+
+# Security & Logging
+elasticsearch              # SIEM logging
+python-dotenv              # Load environment variables
+
+# Backend API
+fastapi
+uvicorn[standard]
+
+# Testing
+pytest
+
+
+websocket-client

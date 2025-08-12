@@ -1,0 +1,30 @@
+
+---
+
+## Data Flow
+1. Ingestion – Live data pulled from [selected API] → AWS Kinesis stream.
+2. Raw Storage – Data stored in AWS S3 for archival.
+3. Processing – Python ETL processes data, loads into Snowflake/PostgreSQL.
+4. Detection – Anomaly detection algorithms flag suspicious activity.
+5. Visualization – Dashboard displays metrics and alerts in real time.
+
+---
+
+## Roadmap
+- [ ] Step 1: Initialize repo, AWS setup, and base folder structure.
+- [ ] Step 2: Connect API to AWS Kinesis & store raw data in S3.
+- [ ] Step 3: Implement Snowflake ETL process.
+- [ ] Step 4: Build anomaly detection logic.
+- [ ] Step 5: Create interactive React dashboard.
+- [ ] Step 6: Add Docker & CI/CD pipeline.
+- [ ] Step 7: Deploy & publish live demo.
+
+---
+
+## Contributing
+PRs welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## License
+MIT License – feel free to use, modify, and share with attribution.
