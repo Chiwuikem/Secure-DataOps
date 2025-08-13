@@ -1,0 +1,5 @@
+Runbook:
+- T1: python etl/producer_crypto.py
+- T2: python -m etl.consumer_kinesis
+- T3: uvicorn api.app:app --reload --port 8000
+- T4: (in dashboard/) npm run dev
