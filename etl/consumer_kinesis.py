@@ -13,10 +13,22 @@ STATE_DIR.mkdir(exist_ok=True)
 METRICS_PATH = STATE_DIR / "metrics.json"
 ALERTS_PATH = STATE_DIR / "alerts.ndjson"
 
-def write_json_atomic(path: pathlib.Path, obj: dict):
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(obj, ensure_ascii=False))
-    tmp.replace(path)
+def write_json_atomic(path: pathlib.Path, obj: dict, retries=10, backoff=0.05):
+    # write to a unique temp file in the same directory
+    tmp = path.with_suffix(path.suffix + f".tmp.{os.getpid()}.{int(time.time()*1e6)}")
+    tmp.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8")
+    for i in range(retries):
+        try:
+            os.replace(tmp, path)   # atomic on Windows if target isn't locked
+            return
+        except PermissionError:
+            time.sleep(backoff * (2 ** i))  # exponential backoff
+    # last resort: try writing directly (risk: rare partial read)
+    path.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8")
+    try:
+        tmp.unlink()
+    except Exception:
+        pass
 
 def append_alert(alert: dict):
     with ALERTS_PATH.open("a", encoding="utf-8") as f:
