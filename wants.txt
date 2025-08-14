@@ -1,0 +1,7 @@
+Snowflake: S3 stage + pipe for auto-ingest (great if your team is on Snowflake).
+
+WebSockets: push live alerts to the dashboard (no polling).
+
+Controls: add UI to tweak window_size and z_threshold via the API.
+
+Deploy: static dashboard to S3/CloudFront; API to ECS/Fargate.

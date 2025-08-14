@@ -1,0 +1,27 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Frontend
+dashboard/node_modules/
+dashboard/dist/
+node_modules/
+*.log
+
+# Local state & data
+.state/
+data/
+*.ndjson
+
+# Git & IDE
+.git/
+.github/
+.vscode/
+.DS_Store
+
+# OS cruft
+Thumbs.db
