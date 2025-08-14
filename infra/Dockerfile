@@ -7,22 +7,20 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# OS certs (good for HTTPS)
+# CA certs for TLS
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
 
-# Install Python deps first (better cache)
+# Python deps
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy ONLY backend code (avoid dashboard, tests, etc.)
-COPY api/ api/
-COPY etl/ etl/
-COPY detection/ detection/
-
-# Ensure state dir exists
+# App code
+COPY . .
 RUN mkdir -p $SECUREDATAOPS_STATE_DIR
 
 EXPOSE 8000
 
-# Start consumer + API
-CMD sh -lc "python -m etl.consumer_kinesis & exec uvicorn api.app:app --host 0.0.0.0 --port 8000"
+# Start producer + consumer + API (producer can be disabled by DISABLE_PRODUCER=1)
+CMD sh -lc "[ \"$DISABLE_PRODUCER\" = \"1\" ] || python etl/producer_crypto.py & \
+             python -m etl.consumer_kinesis & \
+             exec uvicorn api.app:app --host 0.0.0.0 --port 8000"
